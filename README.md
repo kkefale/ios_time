@@ -24,6 +24,10 @@ This project is a web-based old-school clock radio interface that displays:
    - Fetches real-time weather data using the [Open-Meteo API](https://open-meteo.com/).
    - Displays high, low, and rainfall data for the current day.
 
+## Screenshot
+
+![Project Screenshot](assets/Screenshot%202025-04-10%20at%2001.57.21.png)
+
 ## How to Run
 
 1. Clone the repository or download the project files.
@@ -37,6 +41,7 @@ This project is a web-based old-school clock radio interface that displays:
 ## File Structure
 
 - `clock.html`: Contains all the HTML, CSS, and JavaScript for the project.
+- `assets/`: Contains project assets, including screenshots.
 
 ## Customization
 
