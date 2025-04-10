@@ -8,6 +8,7 @@ This project is a web-based old-school clock radio interface that displays:
   - Current temperature (in parentheses).
   - Daily high and low temperatures.
   - Rainfall in millimeters.
+- A second footer displaying the current date, month, year, and time zone.
 
 ## Features
 
@@ -24,9 +25,13 @@ This project is a web-based old-school clock radio interface that displays:
    - Fetches real-time weather data using the [Open-Meteo API](https://open-meteo.com/).
    - Displays high, low, and rainfall data for the current day.
 
+4. **Date and Time Zone Footer**:
+   - Displays the current date, month, year, and time zone.
+   - Styled with a smaller font for better visual balance.
+
 ## Screenshot
 
-![Project Screenshot](assets/Screenshot%202025-04-10%20at%2001.57.21.png)
+![Updated Project Screenshot](assets/screenshot.png)
 
 ## How to Run
 
