@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital LED Clock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif; /* Default font for labels */
+            background: #000000; /* All black background */
+            color: #E0E0E0; /* Light gray for labels, good contrast on dark bg */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem; /* Padding for the body */
+            margin: 0; /* Ensure no default body margin */
+        }
+        .digital-font {
+            font-family: 'Orbitron', sans-serif; /* Font for time/date digits */
+            color: #FF4136; /* Bright red for LED effect */
+            text-shadow: 0 0 5px #FF4136, 0 0 10px #FF4136, 0 0 15px rgba(255, 65, 54, 0.7); /* Glow effect */
+        }
+
+        /* Time Segment Styling */
+        .time-segment {
+            background-color: #111111; /* Slightly lighter black for time segments */
+            padding: 0.5rem 0; /* Vertical padding */
+            border-radius: 0.5rem;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
+            text-align: center; /* Center the number span */
+            flex: 1 1 0%; 
+            min-width: 5rem; /* Base min-width for text-6xl */
+        }
+
+        @media (min-width: 640px) { /* sm breakpoint */
+            .time-segment {
+                min-width: 6.5rem; /* Min-width for sm:text-7xl */
+            }
+        }
+
+        @media (min-width: 768px) { /* md breakpoint */
+            .time-segment {
+                min-width: 8rem; /* Min-width for md:text-8xl */
+            }
+        }
+
+        /* Info Bar Styling */
+        .info-label {
+            font-size: 0.75em; 
+            color: #A0A0A0; 
+            margin-left: 0.25rem; 
+            text-transform: uppercase;
+            line-height: 1; 
+        }
+        .day-of-week span {
+            padding: 0.2rem 0.4rem; 
+            border-radius: 0.25rem;
+            margin: 0 0.1rem; 
+            font-size: 0.8em; 
+            background-color: #1a1a1a; 
+            color: #888888; 
+        }
+        .day-of-week span.active {
+            background-color: #FF4136; 
+            color: #FFFFFF; 
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        .info-item {
+            display: flex;
+            align-items: baseline; 
+            margin: 0 0.3rem; 
+            padding: 0.25rem 0.5rem;
+            background-color: #111111;
+            border-radius: 0.375rem;
+        }
+        .info-item .digital-font {
+            font-size: 1.5rem; 
+        }
+
+        /* Max/Min Temperature Styling */
+        .temp-min-max {
+            display: flex; 
+            align-items: baseline; 
+            gap: 0.25rem; 
+        }
+        .temp-unit {
+            font-size: 0.9em !important; 
+            margin-left: -0.15rem; 
+            margin-right: 0.15rem; 
+        }
+        .temp-arrow {
+            font-size: 1.2em !important; 
+            line-height: 1;
+        }
+        .up-arrow {
+            color: #FF851B; /* Orange for up arrow */
+        }
+        .down-arrow {
+            color: #0074D9; /* Blue for down arrow */
+        }
+        
+        /* Weather Condition Icon Styling */
+        .weather-icon {
+            font-size: 1.8rem; /* Adjust size of the emoji/icon */
+            color: #FFDC00; /* Yellow for sun */
+            text-shadow: 0 0 8px #FFDC00; /* Glow for the sun */
+            line-height: 1; /* Ensure proper vertical alignment */
+        }
+
+
+        /* Main Clock Container */
+        .clock-container {
+            width: 100%;
+            max-width: 900px; 
+            padding: 1.5rem;  
+            background-color: #0a0a0a; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 0 20px rgba(255, 65, 54, 0.2); 
+            border: 1px solid #222222; 
+        }
+
+        /* Colon Separator Styling */
+        .colon-separator {
+            padding: 0 0.2rem; 
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="clock-container">
+        
+        <div class="flex justify-center items-end w-full mb-6">
+            <div class="time-segment">
+                <span id="hours" class="digital-font text-6xl sm:text-7xl md:text-8xl">00</span>
+            </div>
+            <span class="colon-separator digital-font text-5xl sm:text-6xl md:text-7xl pb-1 sm:pb-2">:</span>
+            <div class="time-segment">
+                <span id="minutes" class="digital-font text-6xl sm:text-7xl md:text-8xl">00</span>
+            </div>
+            <span class="colon-separator digital-font text-5xl sm:text-6xl md:text-7xl pb-1 sm:pb-2">:</span>
+            <div class="time-segment">
+                <span id="seconds" class="digital-font text-6xl sm:text-7xl md:text-8xl">00</span>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap justify-center items-center gap-y-2 gap-x-1 sm:gap-x-2 text-xs sm:text-sm">
+            
+            <div class="info-item">
+                <span id="date-day" class="digital-font">00</span><span class="info-label">Date</span>
+            </div>
+            <div class="info-item">
+                <span id="date-month" class="digital-font">00</span><span class="info-label">Month</span>
+            </div>
+            <div class="info-item">
+                <span id="date-year" class="digital-font">0000</span><span class="info-label">Year</span>
+            </div>
+
+            <div class="info-item day-of-week flex items-center">
+                <span id="day-sun">SUN</span>
+                <span id="day-mon">MON</span>
+                <span id="day-tue">TUE</span>
+                <span id="day-wed">WED</span>
+                <span id="day-thu">THU</span>
+                <span id="day-fri">FRI</span>
+                <span id="day-sat">SAT</span>
+            </div>
+            
+            <div class="info-item">
+                <span id="weather-condition-icon" class="weather-icon">☀️</span>
+            </div>
+
+            <div class="info-item temp-min-max">
+                <span id="max-temp" class="digital-font">24</span><span class="digital-font temp-unit">°C</span>
+                <span class="temp-arrow up-arrow digital-font">↑</span>
+                <span id="min-temp" class="digital-font ml-2">11</span><span class="digital-font temp-unit">°C</span>
+                <span class="temp-arrow down-arrow digital-font">↓</span>
+            </div>
+        </div>
+         <p class="text-xs text-gray-600 mt-4 text-center">(Daily forecast for Cape Town)</p>
+    </div>
+
+    <script>
+        // Function to pad single digits with a leading zero
+        function padZero(num) {
+            return num < 10 ? '0' + num : num;
+        }
+
+        // Function to update the clock time, date, day, and set static weather info
+        function updateClock() {
+            const now = new Date();
+
+            // Update Time
+            document.getElementById('hours').textContent = padZero(now.getHours());
+            document.getElementById('minutes').textContent = padZero(now.getMinutes());
+            document.getElementById('seconds').textContent = padZero(now.getSeconds());
+
+            // Update Date
+            document.getElementById('date-day').textContent = padZero(now.getDate());
+            document.getElementById('date-month').textContent = padZero(now.getMonth() + 1); // Month is 0-indexed
+            document.getElementById('date-year').textContent = now.getFullYear();
+
+            // Update Day of the Week
+            const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+            const currentDay = days[now.getDay()];
+            
+            days.forEach(day => {
+                const dayEl = document.getElementById(`day-${day}`);
+                if (dayEl) {
+                    dayEl.classList.remove('active');
+                    dayEl.style.color = '#888888'; // Reset color for inactive days
+                }
+            });
+            const currentDayEl = document.getElementById(`day-${currentDay}`);
+            if (currentDayEl) {
+                currentDayEl.classList.add('active');
+                currentDayEl.style.color = '#FFFFFF'; // Ensure active day text is bright
+            }
+
+            // Set Max/Min Temperatures (Static based on fetched data for today)
+            const maxTempEl = document.getElementById('max-temp');
+            const minTempEl = document.getElementById('min-temp');
+            if (maxTempEl) maxTempEl.textContent = '24';
+            if (minTempEl) minTempEl.textContent = '11';
+
+            // Set Weather Condition Icon (Static based on fetched data for today)
+            // For a dynamic icon, you'd fetch current conditions and choose the icon accordingly.
+            // Possible icons: ☀️ (sun), ☁️ (cloud), 🌧️ (rain/umbrella), 🌦️ (sun behind rain cloud) etc.
+            const weatherIconEl = document.getElementById('weather-condition-icon');
+            if (weatherIconEl) {
+                // Based on the forecast (generally sunny/partly cloudy, low rain chance)
+                weatherIconEl.textContent = '☀️'; 
+            }
+        }
+
+        // Initial call to set the clock immediately
+        updateClock();
+
+        // Update the clock every second (weather data remains static in this example)
+        setInterval(updateClock, 1000);
+    </script>
+
+</body>
+</html>
